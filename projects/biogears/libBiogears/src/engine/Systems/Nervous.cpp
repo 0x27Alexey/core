@@ -1125,8 +1125,10 @@ void Nervous::CheckNervousStatus()
 void Nervous::SetPupilEffects()
 {
   // Get modifiers from Drugs
-  double leftPupilSizeResponseLevel = m_data.GetDrugs().GetPupillaryResponse().GetSizeModifier().GetValue();
-  double leftPupilReactivityResponseLevel = m_data.GetDrugs().GetPupillaryResponse().GetReactivityModifier().GetValue();
+  double leftPupilSizeResponseLevel = 0.0;
+   //m_data.GetDrugs().GetPupillaryResponse().GetSizeModifier().GetValue();
+  double leftPupilReactivityResponseLevel = 0.0;
+  //m_data.GetDrugs().GetPupillaryResponse().GetReactivityModifier().GetValue();
   double rightPupilSizeResponseLevel = leftPupilSizeResponseLevel;
   double rightPupilReactivityResponseLevel = leftPupilReactivityResponseLevel;
 

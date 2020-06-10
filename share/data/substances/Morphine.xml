@@ -18,10 +18,6 @@
   </Clearance>
   <Pharmacokinetics>
     <TissueKinetics>
-      <Name>BoneTissue</Name>
-      <PartitionCoefficient readOnly="false" value="1.98"/>
-    </TissueKinetics>
-    <TissueKinetics>
       <Name>BrainTissue</Name>
       <PartitionCoefficient readOnly="false" value="1.27"/>
     </TissueKinetics>
@@ -70,27 +66,4 @@
       <PartitionCoefficient readOnly="false" value="0.73"/>
     </TissueKinetics>
   </Pharmacokinetics>
-  <Pharmacodynamics>
-    <Bronchodilation readOnly="false" value="0"/>
-    <DiastolicPressureModifier readOnly="false" value="-0.15"/>
-    <EC50 readOnly="false" unit="ug/mL" value="0.075"/>
-    <EMaxShapeParameter readOnly="false" value="1"/>
-    <FeverModifier readOnly="false" value="0"/>
-    <HeartRateModifier readOnly="false" value="-0.06"/>
-    <HemorrhageModifier readOnly="false" value="0"/>
-    <NeuromuscularBlock readOnly="false" value="0"/>
-    <PainModifier readOnly="false" value="0.85"/>
-    <PupillaryResponse>
-      <ReactivityModifier readOnly="false" value="0"/>
-      <SizeModifier readOnly="false" value="-0.25"/>
-    </PupillaryResponse>
-    <RespirationRateModifier readOnly="false" value="-1"/>
-    <Sedation readOnly="false" value="0"/>
-    <SystolicPressureModifier readOnly="false" value="-0.1"/>
-    <TidalVolumeModifier readOnly="false" value="0"/>
-    <TubularPermeabilityModifier readOnly="false" value="0"/>
-    <CentralNervousModifier readOnly="false" value="0.85"/>
-    <AntibacterialEffect readOnly="false" unit="1/hr" value="0"/>
-    <EffectSiteRateConstant readOnly="false" unit="1/min" value="0.0026"/>
-  </Pharmacodynamics>
 </Substance>
