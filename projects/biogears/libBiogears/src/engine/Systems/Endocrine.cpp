@@ -212,7 +212,7 @@ void Endocrine::SynthesizeInsulin()
 
   //super simple scaling factor for now:
   metabolicScaling = (19.0 / 0.07) * (biologicalDebt - 0.28) + 1.0;
-  metabolicScaling = std::min(metabolicScaling, 0.0);
+  metabolicScaling = std::max(metabolicScaling, 0.0);
 
   diabetesScale *= metabolicScaling;
 
@@ -229,14 +229,15 @@ void Endocrine::SynthesizeInsulin()
   // Also, since we only key off of the instantaneous aorta glucose, we miss out on any parasympathetic
   // signals that affect Beta cells, meaning if we implement stress response, we might also see hyperinsulinemia (see Boron p 1222)
   if (bloodGlucoseConcentration_g_Per_L < 0.9) {
-    insulinSynthesisRate_pmol_Per_min = insulinMolConversion * (23.421 / (1.0 + exp((2.0 - 3.0 * (bloodGlucoseConcentration_g_Per_L + 0.4)) / 0.3)));
+    insulinSynthesisRate_pmol_Per_min = diabetesScale * metabolicScaling * insulinMolConversion * (23.421 / (1.0 + exp((2.0 - 3.0 * (bloodGlucoseConcentration_g_Per_L + 0.4)) / 0.3)));
   }
   else {
-    insulinSynthesisRate_pmol_Per_min = insulinMolConversion * (23.4 + (37.0 / (1.0 + exp((2.0 - 5.0 * (bloodGlucoseConcentration_g_Per_L - 1.2)) / 0.3))));
+    insulinSynthesisRate_pmol_Per_min = diabetesScale * metabolicScaling * insulinMolConversion * (23.4 + (37.0 / (1.0 + exp((2.0 - 5.0 * (bloodGlucoseConcentration_g_Per_L - 1.2)) / 0.3))));
   }
-  //double insulinSynthesisRate_pmol_Per_min = diabetesScale * 6.67 * 65.421 / (1.0 + exp((2.0 - 2.0 * bloodGlucoseConcentration_g_Per_L) / 0.3));
 
-  //m_data.GetDataTrack().Probe("DiabetesScalePercent", diabetesScale * 100);
+  //insulinSynthesisRate_pmol_Per_min = diabetesScale * 6.67 * 65.421 / (1.0 + exp((2.0 - 2.0 * bloodGlucoseConcentration_g_Per_L) / 0.3));
+
+  m_data.GetDataTrack().Probe("insulinSynthesisRate_pmol_Per_min", insulinSynthesisRate_pmol_Per_min);
 
   GetInsulinSynthesisRate().SetValue(insulinSynthesisRate_pmol_Per_min, AmountPerTimeUnit::pmol_Per_min);
 

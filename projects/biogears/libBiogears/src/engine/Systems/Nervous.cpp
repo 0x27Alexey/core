@@ -1225,7 +1225,7 @@ void Nervous::CalculateSleepEffects()
   }
 
   //calculate A 
-  at = 0.4*(L1 / (1 + exp(-k * (sleepRatio - s)))) + L0;
+  at = 0.7*(L1 / (1 + exp(-k * (sleepRatio - s)))) + L0;
 
   //update circadian rythm: 
   ct = 5.1 - at * sin((PI / 12.0)*simTime_hr*(1 / 24.0));
@@ -1266,6 +1266,7 @@ void Nervous::CalculateSleepEffects()
   GetReactionTime().SetValue(m_ReactionTime_s / 1000.0, TimeUnit::s);   //reaction time is computed in ms but we don't spport that time unit
 
 
+
 }
 }
 
@@ -1275,7 +1276,6 @@ void Nervous::CalculateSleepEffects()
 ///
 /// \details
 /// Models for metabolic changes and vigalence and awareness changes are computed here.
-/// These models effect physiology data requests and the tissue system
 //--------------------------------------------------------------------------------------------------
 void biogears::Nervous::UpdateSleepState()
 {

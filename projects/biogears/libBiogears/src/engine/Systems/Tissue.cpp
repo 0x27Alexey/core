@@ -688,6 +688,10 @@ void Tissue::CalculateMetabolicConsumptionAndProduction(double time_s)
   double kcal_Per_day_Per_Watt = 20.6362855;
   double maxWorkRate_W = 1200; //see Energy::Exercise
 
+  double SleepTime_min = m_data.GetNervous().GetSleepTime().GetValue(TimeUnit::min);   //update value from last computation
+  double WakeTime_min = m_data.GetNervous().GetWakeTime().GetValue(TimeUnit::min);   //update value from last computation
+  double sleepRatio = WakeTime_min / SleepTime_min;   //independant variable for circadian rythm equation
+
   //Patients with COPD show higher levels of anaerobic metabolism \cite mathur1999cerebral \cite engelen2000factors
   if (m_data.GetConditions().HasChronicObstructivePulmonaryDisease()) {
     mandatoryMuscleAnaerobicFraction *= 1.5; //50% increase
@@ -697,6 +701,11 @@ void Tissue::CalculateMetabolicConsumptionAndProduction(double time_s)
     double maxBleedingRate_mL_Per_min = 200.0;
     double bleedingRate_mL_Per_min = m_data.GetCompartments().GetLiquidCompartment(BGE::VascularCompartment::Ground)->GetInFlow(VolumePerTimeUnit::mL_Per_min);
     mandatoryMuscleAnaerobicFraction = 0.5 * bleedingRate_mL_Per_min / maxBleedingRate_mL_Per_min;
+  }
+
+  //if a patient is sleep deprived scale back how much glucose the brain is using (7%)
+  if (sleepRatio > 5.0) {
+    brainNeededEnergy_kcal *= 0.93;
   }
 
   //Reusable values for looping
