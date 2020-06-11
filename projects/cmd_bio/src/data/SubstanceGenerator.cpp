@@ -630,7 +630,7 @@ PDMod_Type SubstanceGenerator::set_PDModifier(PDMod_Type modifier, std::string v
   value.erase(value.begin());
   value.erase(value.end() - 1);
   //Split string at token (;)
-  auto modifier_data = split(value, '; ');
+  auto modifier_data = split(value, ';');
   //Set EMax to first element
   modifier.EMax(std::stod(modifier_data[0]));
   //Set EC50 value and unit
