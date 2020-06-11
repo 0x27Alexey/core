@@ -760,6 +760,7 @@ void Drugs::CalculateDrugEffects()
     { "PupilSize", 0 },
     { "RespirationRate", 0 },
     { "Sedation", 0 },
+    { "SystolicPressure", 0 },
     { "TidalVolume", 0 },
     { "TubularPermeability", 0 }
   };
@@ -796,12 +797,15 @@ void Drugs::CalculateDrugEffects()
     for (auto mod : modifiers) {
       eMax = mod.second->GetEMax().GetValue();
       ec50_ug_Per_mL = mod.second->GetEC50(MassPerVolumeUnit::ug_Per_mL);
+      if (std::abs(eMax) < ZERO_APPROX) {
+        continue; //If no effect (i.e. eMax = 0), move on to next effect.  Save some time and also don't run risk of dividing by 0 somewhere since non-defined EC50s are set to 0
+      }
       if (sub->GetClassification() == CDM::enumSubstanceClass::Opioid) {
-        effect = std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter) / (std::pow(ec50_ug_Per_mL, shapeParameter) * std::pow(1.0 + inhibitorConcentration_ug_Per_mL / inhibitorConstant_ug_Per_mL, shapeParameter) + std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter));
+        effect = eMax * std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter) / (std::pow(ec50_ug_Per_mL, shapeParameter) * std::pow(1.0 + inhibitorConcentration_ug_Per_mL / inhibitorConstant_ug_Per_mL, shapeParameter) + std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter));
       } else if (sub->GetName() == "Sarin") {
         effect = m_RbcAcetylcholinesteraseFractionInhibited;
       } else {
-        effect = mod.second->GetEMax().GetValue() * std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter) / (std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter) + std::pow(mod.second->GetEC50(MassPerVolumeUnit::ug_Per_mL), shapeParameter));
+        effect = eMax * std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter) / (std::pow(effectSiteConcentration_ug_Per_mL, shapeParameter) + std::pow(ec50_ug_Per_mL, shapeParameter));
       }
       effects_unitless[mod.first] += effect;
     }
@@ -892,6 +896,7 @@ void Drugs::CalculateDrugEffects()
       GetHeartRateChange().SetValue(0.0, FrequencyUnit::Per_min);
     }
   }
+
 }
 
 //--------------------------------------------------------------------------------------------------
