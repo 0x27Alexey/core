@@ -470,8 +470,8 @@ bool SubstanceGenerator::process_pharmacokinetics(CSV_RowItr itr)
         if (secondPKA == value.npos) {
           phys_type.AcidDissociationConstant().push_back(std::stod(value));
         } else {
-          std::string pKA1 = value.substr(0, secondPKA);
-          std::string pKA2 = value.substr(secondPKA + 1, value.npos);
+          std::string pKA1 = trim(value.substr(0, secondPKA));
+          std::string pKA2 = trim(value.substr(secondPKA + 1, value.npos));
           phys_type.AcidDissociationConstant().push_back(std::stod(pKA1));
           phys_type.AcidDissociationConstant().push_back(std::stod(pKA2));
         }
@@ -531,42 +531,41 @@ bool SubstanceGenerator::process_pharmacodynamics(CSV_RowItr itr)
         value = (itr + 1)->second[index];
         data.EMaxShapeParameter(std::stod(value));
         value = (itr + 2)->second[index];
-        data.Bronchodilation(set_PDModifier(pdMod, value));
-        value = (itr + 3)->second[index];
-        data.DiastolicPressureModifier(set_PDModifier(pdMod, value));
-        value = (itr + 4)->second[index];
-        data.FeverModifier(set_PDModifier(pdMod, value));
-        value = (itr + 5)->second[index];
-        data.HeartRateModifier(set_PDModifier(pdMod, value));
-        value = (itr + 6)->second[index];
-        data.HemorrhageModifier(set_PDModifier(pdMod, value));
-        value = (itr + 7)->second[index];
-        data.NeuromuscularBlock(set_PDModifier(pdMod, value));
-        value = (itr + 8)->second[index];
-        data.PupilReactivityModifier(set_PDModifier(pdMod, value));
-        value = (itr + 9)->second[index];
-        data.PupilSizeModifier(set_PDModifier(pdMod, value));
-        value = (itr + 10)->second[index];
-        data.RespirationRateModifier(set_PDModifier(pdMod, value));
-        value = (itr + 11)->second[index];
-        data.Sedation(set_PDModifier(pdMod, value));
-        value = (itr + 12)->second[index];
-        data.SystolicPressureModifier(set_PDModifier(pdMod, value));
-        value = (itr + 13)->second[index];
-        data.TidalVolumeModifier(set_PDModifier(pdMod, value));
-        value = (itr + 14)->second[index];
-        data.TubularPermeabilityModifier(set_PDModifier(pdMod, value));
-        value = (itr + 15)->second[index];
-        data.CentralNervousModifier(set_PDModifier(pdMod, value));
-        value = (itr + 16)->second[index];
-        data.PainModifier(set_PDModifier(pdMod, value));
-        value = (itr + 17)->second[index];
         CDM::SubstanceData::Pharmacodynamics_type::AntibacterialEffect_type anti;
         anti.value(std::stod(value, &pos));
         anti.unit(trim(value.substr(pos)));
         data.AntibacterialEffect(anti);
+        value = (itr + 3)->second[index];
+        data.Bronchodilation(set_PDModifier(pdMod, value));
+        value = (itr + 4)->second[index];
+        data.CentralNervousModifier(set_PDModifier(pdMod, value));
+        value = (itr + 5)->second[index];
+        data.DiastolicPressureModifier(set_PDModifier(pdMod, value));
+        value = (itr + 6)->second[index];
+        data.FeverModifier(set_PDModifier(pdMod, value));
+        value = (itr + 7)->second[index];
+        data.HeartRateModifier(set_PDModifier(pdMod, value));
+        value = (itr + 8)->second[index];
+        data.HemorrhageModifier(set_PDModifier(pdMod, value));
+        value = (itr + 9)->second[index];
+        data.NeuromuscularBlock(set_PDModifier(pdMod, value));
+        value = (itr + 10)->second[index];
+        data.PainModifier(set_PDModifier(pdMod, value));
+        value = (itr + 11)->second[index];
+        data.PupilReactivityModifier(set_PDModifier(pdMod, value));
+        value = (itr + 12)->second[index];
+        data.PupilSizeModifier(set_PDModifier(pdMod, value));
+        value = (itr + 13)->second[index];
+        data.RespirationRateModifier(set_PDModifier(pdMod, value));
+        value = (itr + 14)->second[index];
+        data.Sedation(set_PDModifier(pdMod, value));
+        value = (itr + 15)->second[index];
+        data.SystolicPressureModifier(set_PDModifier(pdMod, value));
+        value = (itr + 16)->second[index];
+        data.TidalVolumeModifier(set_PDModifier(pdMod, value));
+        value = (itr + 17)->second[index];
+        data.TubularPermeabilityModifier(set_PDModifier(pdMod, value));
         value = (itr + 18)->second[index];
-
         substance.Pharmacodynamics(data);
       } catch (std::exception e) {
         rValue = false;
@@ -631,13 +630,13 @@ PDMod_Type SubstanceGenerator::set_PDModifier(PDMod_Type modifier, std::string v
   value.erase(value.begin());
   value.erase(value.end() - 1);
   //Split string at token (;)
-  auto modifier_data = split(value, ';');
+  auto modifier_data = split(value, '; ');
   //Set EMax to first element
   modifier.EMax(std::stod(modifier_data[0]));
   //Set EC50 value and unit
   CDM::ScalarMassPerVolumeData ec50;
   size_t pos = 0;
-  ec50.value(std::stod(modifier_data[1], &pos));
+  ec50.value(std::stod(trim(modifier_data[1]), &pos));
   ec50.unit(trim(modifier_data[1].substr(pos)));
   modifier.EC50(ec50);
 
