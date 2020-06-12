@@ -269,7 +269,7 @@ void Drugs::AdministerSubstanceBolus()
   double dose_mL;
   double concentration_ugPermL;
   double massIncrement_ug = 0;
-  double administrationTime_s = 2.0; //administer dose over 2 seconds for a bolus dose
+  double administrationTime_s = 10.0; //Default if not supplied by action
 
   for (auto b : boluses) {
     sub = b.first;
@@ -302,7 +302,9 @@ void Drugs::AdministerSubstanceBolus()
       completedBolus.push_back(b.first); // Remove it
       continue;
     }
-
+    if (bolus->HasAdminTime()) {
+      administrationTime_s = bolus->GetAdminTime().GetValue(TimeUnit::s);
+    }
     concentration_ugPermL = bolus->GetConcentration().GetValue(MassPerVolumeUnit::ug_Per_mL);
     massIncrement_ug = dose_mL * concentration_ugPermL * m_dt_s / administrationTime_s;
     bolusState->GetElapsedTime().IncrementValue(m_dt_s, TimeUnit::s);
@@ -896,7 +898,6 @@ void Drugs::CalculateDrugEffects()
       GetHeartRateChange().SetValue(0.0, FrequencyUnit::Per_min);
     }
   }
-
 }
 
 //--------------------------------------------------------------------------------------------------
