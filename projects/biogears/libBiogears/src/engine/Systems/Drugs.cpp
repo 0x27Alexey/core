@@ -842,8 +842,10 @@ void Drugs::CalculateDrugEffects()
   }
 
   //Translate Diastolic and Systolic Pressure to pulse pressure and mean pressure
-  double deltaMeanPressure_mmHg = (2 * effects_unitless["DiastolicPressure"] + effects_unitless["SystolicPressure"]) / 3;
-  double deltaPulsePressure_mmHg = (effects_unitless["SystolicPressure"] - effects_unitless["DiastolicPressure"]);
+  double systolicBaseline_mmHg = patient.GetSystolicArterialPressureBaseline(PressureUnit::mmHg);
+  double diastolicBaseline_mmHg = patient.GetDiastolicArterialPressureBaseline(PressureUnit::mmHg);
+  double deltaMeanPressure_mmHg = (2.0 * diastolicBaseline_mmHg * effects_unitless["DiastolicPressure"] + systolicBaseline_mmHg * effects_unitless["SystolicPressure"]) / 3;
+  double deltaPulsePressure_mmHg = (systolicBaseline_mmHg * effects_unitless["SystolicPressure"] - diastolicBaseline_mmHg * effects_unitless["DiastolicPressure"]);
 
   //Set values on the CDM System Values
   GetBronchodilationLevel().SetValue(effects_unitless["Bronchodilation"]);
