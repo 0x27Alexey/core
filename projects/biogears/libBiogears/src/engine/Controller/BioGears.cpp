@@ -306,6 +306,21 @@ bool BioGears::SetupPatient()
     Info(ss);
   }
 
+  //Sleep Amount ---------------------------------------------------------------
+  double sleepAmount_hr = 8.0;
+  if(!m_Patient->HasSleepAmount()) {
+    m_Patient->GetSleepAmount().SetValue(sleepAmount_hr, TimeUnit::hr);
+    ss << "No patient sleep amount set " << sleepAmount_hr << " hr being used.";
+    Info(ss);
+  }
+
+  //additional checks to ensure non-zero and negative values: 
+  if(m_Patient->GetSleepAmount().GetValue(TimeUnit::hr) < 0 || m_Patient->GetSleepAmount().GetValue(TimeUnit::hr) == 0) {
+    m_Patient->GetSleepAmount().SetValue(sleepAmount_hr, TimeUnit::hr);
+    ss << "Sleep amount must be a non-zero positive number, setting to default: " << sleepAmount_hr << " hr being used.";
+    Info(ss);
+  }
+
   //HEIGHT ---------------------------------------------------------------
   //From CDC values for 20 year olds
   //Minimums are 3rd percentile, Maximums are 97th percentile, and standard is 50th percentile

@@ -1202,7 +1202,7 @@ void Nervous::CalculateSleepEffects()
   double sleepRatio = m_WakeTime_min / m_SleepTime_min;   //independat variable for circadian rythm equation
   double at = 0.0;   //circadian rythm parameter
   double ct = 0.0;   //circadian rythm value
-  double simTime_hr = m_data.GetSimulationTime().GetValue(TimeUnit::hr);
+  double simTime_s = m_data.GetSimulationTime().GetValue(TimeUnit::s);
 
   //consts involved in the ODE 
   const double pw = 0.3;//0.13;
@@ -1217,6 +1217,7 @@ void Nervous::CalculateSleepEffects()
   const double aIntercept = 4.2;
   const double rIntercept = 300.0;
   const double rSlope = 16.67;
+  double count = 1.0;
   
 
   if (m_SleepState == CDM::enumSleepState::Asleep) {
@@ -1228,10 +1229,10 @@ void Nervous::CalculateSleepEffects()
   at = 0.7*(L1 / (1 + exp(-k * (sleepRatio - s)))) + L0;
 
   //update circadian rythm: 
-  ct = 5.1 - at * sin((PI / 12.0)*simTime_hr*(1 / 24.0));
+  ct = 5.1 - at * sin((PI / 43200.0)*simTime_s);
   double xt = ct * (m_BiologicalDebt / (1 + std::pow(m_BiologicalDebt, 2)));
 
-  double ct2 = 5.0 - at * sin((PI / 12.0)*(simTime_hr + m_dt_s)*(1 / 24.0));
+  double ct2 = 5.0 - at * sin((PI / 43200.0)*(simTime_s + m_dt_s));
   double k1 = pw * rwt + pb1 * rbt*m_BiologicalDebt - rbt * xt;
   double xt2 = ct * ((m_BiologicalDebt + m_dt_s * k1) / (1 + std::pow(m_BiologicalDebt + m_dt_s * k1, 2)));
   double k2 = pw * rwt + pb1 * rbt*(m_BiologicalDebt + m_dt_s * k1) - rbt * xt2;
@@ -1251,6 +1252,13 @@ void Nervous::CalculateSleepEffects()
     m_AttentionLapses = aSlope * m_TiredTime_hr + aIntercept;
     m_ReactionTime_s = rSlope * m_TiredTime_hr + rIntercept;
     m_TiredTime_hr += m_dt_s / 3600.0;
+  }
+
+  //reset if patient has had enough sleep, recovery requires 8 hours (in any combination)
+  if(m_SleepTime_min > (420.0 * count) + m_data.GetPatient().GetSleepAmount(TimeUnit::min)) {
+    m_AttentionLapses = aIntercept;
+    m_ReactionTime_s = rIntercept;
+    count += 1.0;
   }
 
   m_data.GetDataTrack().Probe("temptime", m_TiredTime_hr);

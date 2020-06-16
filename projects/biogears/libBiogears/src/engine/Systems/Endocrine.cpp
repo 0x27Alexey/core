@@ -189,6 +189,7 @@ void Endocrine::SynthesizeInsulin()
   double insulinSynthesisRate_pmol_Per_min = 0.0;
   double insulinMolConversion = 6.67;
 
+
   //In type 1 diabetes, the ability to produce insulin is lessened
   if (m_data.GetConditions().HasDiabetesType1()) {
     if (m_data.GetConditions().GetDiabetesType1()->HasInsulinProductionSeverity())
@@ -210,11 +211,9 @@ void Endocrine::SynthesizeInsulin()
     diabetesScale *= multiplier;
   }
 
-  //super simple scaling factor for now:
-  metabolicScaling = (19.0 / 0.07) * (biologicalDebt - 0.28) + 1.0;
+  //want to scale insulin synthesis down 30 % during sleep deprived states
+  metabolicScaling = -0.3 / (1 + exp(-55.0 * (biologicalDebt - 0.35))) + 1.0;
   metabolicScaling = std::max(metabolicScaling, 0.0);
-
-  diabetesScale *= metabolicScaling;
 
   m_data.GetDataTrack().Probe("metabolicScaling", metabolicScaling);
 
