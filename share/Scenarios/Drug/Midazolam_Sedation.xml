@@ -63,8 +63,10 @@
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="MuscleGlycogen" Unit="g" Precision="2"/>
 
 	<!-- Anything action specific data needed for verification of this scenario -->
-	<DataRequest xsi:type="PhysiologyDataRequestData" Name="NeuromuscularBlockLevel" Precision="2"/>
+	<DataRequest xsi:type="PhysiologyDataRequestData" Name="CentralNervousResponse" Precision="2"/>
 	<DataRequest xsi:type="PhysiologyDataRequestData" Name="SedationLevel" Precision="2"/>
+	<DataRequest xsi:type="PhysiologyDataRequestData" Name="RespirationRateChange" Precision="2"/>
+	<DataRequest xsi:type="PhysiologyDataRequestData" Name="RichmondAgitationSedationScale" Precision="2"/>
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="PupillaryResponse-SizeModifier" Precision="3"/>
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="PupillaryResponse-ReactivityModifier" Precision="3"/>
   
@@ -115,7 +117,8 @@
 	<DataRequest xsi:type="LiquidCompartmentDataRequestData" Compartment="SpleenTissueIntracellular"      Substance="Midazolam" Name="Concentration" Unit="ug/L" Precision="4"/>    
 	
 	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam" Name="SystemicMassCleared" Unit="ug" Precision="2"/>
-	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam"	Name="EffectSiteConcentration" Unit="ug/mL" Precision="6"/>	
+	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam"	Name="EffectSiteConcentration" Unit="ug/mL" Precision="4"/>	
+	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam"	Name="PlasmaConcentration" Unit="ug/mL" Precision="4"/>
 	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam" Name="MassInBody" Unit="ug" Precision="2"/>	
 	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam" Compartment="LeftKidneyTissue" Name="PartitionCoefficient" Precision="4"/>
 	<DataRequest xsi:type="SubstanceDataRequestData" Substance="Midazolam" Compartment="RightKidneyTissue" Name="PartitionCoefficient" Precision="4"/>
@@ -142,10 +145,11 @@
     </Action>
     <Action xsi:type="SubstanceBolusData" AdminRoute="Intravenous">
         <Substance>Midazolam</Substance>
-        <Concentration value="500" unit="ug/mL"/>
-        <Dose value="10" unit="mL"/>
+        <Concentration value="1.0" unit="mg/mL"/>
+        <Dose value="7.7" unit="mL"/>
+		<AdminTime value="20" unit="s"/>
     </Action>
 	<Action xsi:type="AdvanceTimeData">
-        <Time value="300" unit="s"/>       
+        <Time value="600" unit="s"/>       
     </Action>
 </Scenario>
