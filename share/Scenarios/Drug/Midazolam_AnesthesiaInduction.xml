@@ -145,6 +145,7 @@
     <Action xsi:type="AdvanceTimeData">
         <Time value="30" unit="s"/>       
     </Action>
+	<!-- 0.25 mg/kg (77 kg BG standard male)-->
     <Action xsi:type="SubstanceBolusData" AdminRoute="Intravenous">
         <Substance>Midazolam</Substance>
         <Concentration value="5.0" unit="mg/mL"/>
