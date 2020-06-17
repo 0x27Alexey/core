@@ -1205,14 +1205,14 @@ void Tissue::CalculateMetabolicConsumptionAndProduction(double time_s)
 
   } //end of the tissue loop
 
-  //Make sure that the energy we used lines up with our demand -- allowing 1% tolerance on either side
-  if ((m_data.GetState() >= EngineState::AtSecondaryStableState) && (totalEnergyRequested_kcal_Check < 0.99 * totalEnergyRequested_kcal || totalEnergyRequested_kcal_Check > 1.01 * totalEnergyRequested_kcal)) {
-    std::stringstream ss;
-    ss << "Tissue Energy Demand / Accounting Mismatch : " << std::endl;
-    ss << "\t Total Energy Requested (kcal) : " << totalEnergyRequested_kcal << std::endl;
-    ss << "\t Energy Acounted (kcal) : " << totalEnergyRequested_kcal_Check << std::endl;
-    Error(ss);
-  }
+  ////Debug Info: Make sure that the energy we used lines up with our demand -- allowing 1% tolerance on either side
+  //if ((m_data.GetState() >= EngineState::AtSecondaryStableState) && (totalEnergyRequested_kcal_Check < 0.99 * totalEnergyRequested_kcal || totalEnergyRequested_kcal_Check > 1.01 * totalEnergyRequested_kcal)) {
+  //  std::stringstream ss;
+  //  ss << "Tissue Energy Demand / Accounting Mismatch : " << std::endl;
+  //  ss << "\t Total Energy Requested (kcal) : " << totalEnergyRequested_kcal << std::endl;
+  //  ss << "\t Energy Acounted (kcal) : " << totalEnergyRequested_kcal_Check << std::endl;
+  //  Error(ss);
+  //}
 
   //Update outputs
   totalO2Consumed_mol += m_hepaticO2Consumed_mol;

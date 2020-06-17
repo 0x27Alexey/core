@@ -19,6 +19,7 @@
 	
 	<BasalMetabolicRate value="1601.14" unit="kcal/day"/>
 	<BloodVolumeBaseline value="4863.8" unit="mL"/>
+	 <SleepAmount readOnly="false" unit="hr" value="8.0"/>
 	<DiastolicArterialPressureBaseline value="73.5" unit="mmHg"/>
     <HeartRateBaseline value="72.0" unit="1/min"/>
 	<!-- MeanArterialPressureBaseline CANNOT be set by the user -->

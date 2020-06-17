@@ -100,6 +100,8 @@ const SEScalar* SENervousSystem::GetScalar(const std::string& name)
     return &GetHeartRateScale();
   if (name == idHeartElastanceScale)
     return &GetHeartElastanceScale();
+  if (name == idReactionTime)
+    return &GetReactionTime();
   if (name == idResistanceScaleExtrasplanchnic)
     return &GetResistanceScaleExtrasplanchnic();
   if (name == idResistanceScaleMuscle)
