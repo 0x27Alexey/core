@@ -68,7 +68,6 @@
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="SedationLevel"	Precision="2"/>
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="PainToleranceChange"		Precision="2"/>
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="RichmondAgitationSedationScale" Precision="2"/>
-  <DataRequest xsi:type="PhysiologyDataRequestData" Name="PainToleranceChange"		Precision="2"/>
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="CentralNervousResponse" Precision="2"/>
   <DataRequest xsi:type="PhysiologyDataRequestData" Name="RespirationRateChange" Precision="2"/>
      	<DataRequest xsi:type="PhysiologyDataRequestData" Name="LeftEyePupillaryResponse-SizeModifier" Precision="3"/>
