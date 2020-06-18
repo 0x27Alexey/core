@@ -935,6 +935,10 @@ void Respiratory::RespiratoryDriver()
 
     Apnea();
 
+    if (m_data.GetAirwayMode() == CDM::enumBioGearsAirwayMode::AnesthesiaMachine || m_data.GetAirwayMode() == CDM::enumBioGearsAirwayMode::MechanicalVentilator) {
+      m_bNotBreathing = true;
+    }
+
     if (m_bNotBreathing) {
       m_DriverPressure_cmH2O = m_DefaultDrivePressure_cmH2O;
     }
@@ -1250,7 +1254,6 @@ void Respiratory::Pneumothorax()
     nextVenousResistance *= venousResistanceModifier;
     venousReturn->GetNextResistance().SetValue(nextVenousResistance, FlowResistanceUnit::mmHg_s_Per_mL);
 
-
     if (m_PatientActions->HasLeftOpenTensionPneumothorax()) {
       // Scale the flow resistance through the chest opening based on severity
       double severity = m_PatientActions->GetLeftOpenTensionPneumothorax()->GetSeverity().GetValue();
@@ -1359,7 +1362,6 @@ void Respiratory::Pneumothorax()
       return;
     }
   }
-  
 }
 
 //--------------------------------------------------------------------------------------------------
