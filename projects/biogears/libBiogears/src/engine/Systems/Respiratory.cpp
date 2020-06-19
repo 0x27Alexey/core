@@ -936,7 +936,8 @@ void Respiratory::RespiratoryDriver()
     Apnea();
 
     if (m_data.GetAirwayMode() == CDM::enumBioGearsAirwayMode::AnesthesiaMachine || m_data.GetAirwayMode() == CDM::enumBioGearsAirwayMode::MechanicalVentilator) {
-      m_bNotBreathing = true;
+      m_DriverPressure_cmH2O = m_DefaultDrivePressure_cmH2O;
+      m_BreathingCycleTime_s = m_ElapsedBreathingCycleTime_min * 60.0;  //Set driver cycle to match elapsed cycle (dictated by ventilator) so that when we turn machine off we re-start spontaneous breathing in a good place
     }
 
     if (m_bNotBreathing) {
